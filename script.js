@@ -27,10 +27,8 @@ generateEl.addEventListener('click', () => {
 function generatePassword(lower, upper, number, symbol, length) {
     let generatePassword = "";
 
-    // Corrigido: soma dos tipos selecionados
     const typeCount = Number(lower) + Number(upper) + Number(number) + Number(symbol);
 
-    // Verifica se pelo menos um tipo foi selecionado
     if (typeCount === 0) {
         return "";
     }
@@ -39,7 +37,6 @@ function generatePassword(lower, upper, number, symbol, length) {
         (item) => Object.values(item)[0]
     );
 
-    // Gera a senha
     for (let i = 0; i < length; i++) {
         const randomType = typesArr[Math.floor(Math.random() * typesArr.length)];
         const keyFromRandomFunc = Object.keys(randomType)[0];
@@ -66,3 +63,54 @@ function getRandomSymbol() {
 
     return symbols[Math.floor(Math.random() * symbols.length)];
 }
+
+i18next.init({
+  lng: "pt",
+  fallbackLng: "pt",
+  resources: {
+    pt: {
+      translation: {
+        title: "Gerador de Senhas",
+        length: "Tamanho da senha",
+        upper: "Incluir maiúsculas",
+        lower: "Incluir minúsculas",
+        number: "Incluir números",
+        symbol: "Incluir símbolos",
+        generate: "Gerar Senha",
+        copied: "Senha copiada!"
+      }
+    },
+    en: {
+      translation: {
+        title: "Password Generator",
+        length: "Password Length",
+        upper: "Include uppercase",
+        lower: "Include lowercase",
+        number: "Include numbers",
+        symbol: "Include symbols",
+        generate: "Generate Password",
+        copied: "Password copied!"
+      }
+    }
+  }
+});
+
+
+function updateContent() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    el.textContent = i18next.t(key);
+  });
+}
+
+updateContent();
+
+document.getElementById("langPT").addEventListener("click", () => {
+  i18next.changeLanguage("pt");
+  updateContent();
+});
+
+document.getElementById("langEN").addEventListener("click", () => {
+  i18next.changeLanguage("en");
+  updateContent();
+});
